@@ -50,3 +50,6 @@ def create_comment(blog: BlogModel, id: int,
         'content': content,
         'version': v
     }
+    
+def required_functionality():
+    return {"message": "Dependency functionality"}
