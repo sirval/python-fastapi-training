@@ -32,10 +32,11 @@ def create_comment(blog: BlogModel, id: int,
                                            alias= 'commentId',
                                            deprecated=True
                                            ),
-                   content: str = Body(...)
+                   content: str = Body(..., min_length=10, max_length=11, regex="^[a-z\s]*$")
                    ):
     return {
         'id': id,
         'blog': blog,
-        'comment_id': comment_id
+        'comment_id': comment_id,
+        'content': content
     }
