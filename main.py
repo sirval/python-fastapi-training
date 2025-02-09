@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from routes import blog_get_ops, blog_post_ops
+from db import models, database
 
 app = FastAPI(
     title="My First FastAPI Training",
@@ -12,3 +13,5 @@ app.include_router(blog_post_ops.router)
 @app.get('/')
 def index():
     return {'message': 'I am working'}
+
+models.Base.metadata.create_all(database.engine)
