@@ -1,7 +1,9 @@
 from sqlalchemy.orm.session import Session
+from sqlalchemy.exc import SQLAlchemyError
 from schemas import UserBase
 from db.models import DbUser
 from db.hash import Hash
+from fastapi import HTTPException
 
 
 def create_user(db: Session, request: UserBase):
@@ -30,7 +32,15 @@ def update_user(db: Session, id: int, request: UserBase):
     return "Ok"
 
 def delete_user(db: Session, id: int):
-    user = db.query(DbUser).filter(DbUser.id == id).first()
-    db.delete(user)
-    db.commit()
-    return "Ok"
+    try:
+        user = db.query(DbUser).filter(DbUser.id == id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found!")
+        db.delete(user)
+        db.commit()
+        return {"message": "User deleted successfully"}
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")

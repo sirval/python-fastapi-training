@@ -3,8 +3,8 @@ from routes import blog_get_ops, blog_post_ops, user_ops
 from db import models, database
 
 app = FastAPI(
-    title="My First FastAPI Training",
-    description="Udemy FastAPI Training",
+    title="FastAPI CRUD",
+    description="FastAPI CRUD Tutorial",
     version="1.0.0"
 )
 app.include_router(user_ops.router)
