@@ -21,3 +21,7 @@ def get_all_users(db: Session = Depends(get_db)):
 @router.patch('/{id}/update')
 def update_user(id: int, request: UserBase, db: Session = Depends(get_db)):
     return db_user.update_user(db, id, request)
+
+@router.delete('/{id}/delete')
+def delete_user(id: int, db: Session= Depends(get_db)):
+    return db_user.delete_user(db, id)
