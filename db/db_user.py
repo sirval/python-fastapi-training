@@ -18,3 +18,13 @@ def create_user(db: Session, request: UserBase):
 
 def get_all_users(db: Session):
     return db.query(DbUser).all()
+
+def update_user(db: Session, id: int, request: UserBase):
+    user = db.query(DbUser).filter(DbUser.id == id)
+    user.update({
+        DbUser.username: request.username,
+        DbUser.email: request.email,
+        DbUser.password: Hash.bcrypt(request.password)
+    })
+    db.commit()
+    return "Ok"
